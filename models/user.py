@@ -5,13 +5,14 @@ from sqlalchemy import Column, Integer, String
 class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
+    pseudo = Column(String(50), unique=True)
     first_name = Column(String(50), unique=True)
     last_name = Column(String(50), unique=True)
-    email = Column(String(120), unique=True)
+    mail = Column(String(120), unique=True)
 
-    def __init__(self, name=None, email=None):
-        self.name = name
-        self.email = email
+    def __init__(self, pseudo=None, mail=None):
+        self.pseudo = pseudo
+        self.mail = mail
 
     def __repr__(self):
-        return '<User %r>' % (self.name)
+        return '<User %r>' % (self.pseudo)
