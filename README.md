@@ -1,7 +1,10 @@
 # Ecommerce_python
  
 Ce projet est une démarche personnelle destinée à développer mes compétences avec FastAPI, un framework Python moderne et rapide pour la création d'APIs.
-C'est une refonte de mon projet d'étude : https://github.com/Szczapa/Projet_Etude_Symfony_Ecommerce qui était lui sous symfony 6 + twig
+C'est une refonte de mon projet d'étude : https://github.com/Szczapa/Projet_Etude_Symfony_Ecommerce qui était lui sous symfony 6 + twig.
+
+Une partie du code est tiré d'un des projets d'étude : https://github.com/Szczapa/Projet_Etude_planning_system_FastAPI
+La nouvelle version sera donc optimisé et retravaillé pour un gain de l'isibilité et de maintenance et de sécurité.
 ## FAQ
 
 #### Quel est l'objectif ?
