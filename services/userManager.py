@@ -1,5 +1,7 @@
-class UserService:
+from fastapi import HTTPException
 
+
+class UserService:
     @staticmethod
     def createUser():
         return print("createUser")
