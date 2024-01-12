@@ -1,11 +1,13 @@
 import os
+
 import bcrypt
 from cryptography.fernet import Fernet
 from dotenv import load_dotenv
 
+load_dotenv()
+
 
 class SecurityManager:
-    load_dotenv()
     key = os.getenv("SECRET_HASHER")
     if key is None:
         raise ValueError("La clé secrète 'SECRET_HASHER' est introuvable")

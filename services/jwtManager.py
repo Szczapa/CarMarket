@@ -1,6 +1,9 @@
 import os
-from fastapi.security import OAuth2PasswordBearer
+
+from dotenv import load_dotenv
 from jwt import encode, decode, InvalidTokenError as PyJWTError
+
+load_dotenv()  # This loads the .env file at the project root
 
 
 class JWTManager:
