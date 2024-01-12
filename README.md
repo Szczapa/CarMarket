@@ -23,7 +23,7 @@ Ce projet est une démarche personnelle destinée à développer mes compétence
 
 #### Autres informations ?
 - Ce projet est associé à un équivalent back-end développé avec symfony apiplatform.
-- [https://github.com/Szczapa/CarMarket](https://github.com/Szczapa/CarMarket)
+- [https://github.com/Szczapa/SymCartMarket](https://github.com/Szczapa/SymCartMarket)
 
 ## Auteurs
 
