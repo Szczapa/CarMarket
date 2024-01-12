@@ -1,4 +1,4 @@
-dev.env
+.env
 test_main.http
 __pycache__/main.cpython-311.pyc
 .idea/CarMarket.iml
@@ -7,3 +7,4 @@ __pycache__/main.cpython-311.pyc
 .idea/misc.xml
 .idea/modules.xml
 .idea/vcs.xml
+*.pyc
