@@ -28,6 +28,26 @@ La nouvelle version sera donc optimisée et retravaillée pour améliorer la lis
 - Ce projet est associé à un équivalent back-end développé avec symfony apiplatform.
 - [https://github.com/Szczapa/SymCartMarket](https://github.com/Szczapa/SymCartMarket)
 
+
+### Todo list
+
+#### Système global
+- [x] Création du système de router
+- [x] Connection à la bdd + systeme de gestion
+- [x] système de hashage + salage et cryptage + salage de toute les données sensibles utilisateurs.
+- [x] Mise en place du système de jwt + connection.
+- [ ] Connection au Front end.
+
+#### Utilisateur
+- [x] Création d'utilisateur
+- [x] Recherche par id
+- [x] Récupération de tout les utilisateurs
+
+#### Produit
+- [ ] Création de produits
+- [ ] Recherche par id de produit
+- [ ] Récupération de tout les produits
+
 ## Auteurs
 
 - Créateur : [@Szczapa](https://github.com/Szczapa)
