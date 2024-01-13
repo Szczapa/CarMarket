@@ -1,85 +1,148 @@
-from fastapi import HTTPException
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi import Depends, HTTPException, status
+from sqlalchemy.orm import Session
+from services.securityManager import SecurityManager as Sm
+from models.user import User, UserCreate
 
 
 class UserManager:
     @staticmethod
-    def createUser():
-        return print("createUser")
+    def createUser(form_data: UserCreate, db: Session):
+        mail = Sm.encrypt_data(form_data.mail)
+        pseudo = Sm.encrypt_data(form_data.pseudo)
+        UserManager.checkEmail(mail, db)
+        UserManager.checkPseudo(pseudo, db)
+        lastname = Sm.encrypt_data(form_data.last_name)
+        firstname = Sm.encrypt_data(form_data.first_name)
+        hashed_password = Sm.hash_password(form_data.password)
+        hash_mail = Sm.hash_mail(form_data.mail)
+
+        new_user = User(
+            pseudo=pseudo,
+            mail=mail,
+            password=hashed_password,
+            first_name=firstname,
+            last_name=lastname,
+            hash_mail=hash_mail
+        )
+        db.add(new_user)
+        db.commit()
+        db.refresh(new_user)
+        return new_user
 
     @staticmethod
-    def deleteUser():
+    def deleteUser(db: Session):
         return print("deleteUser")
 
     @staticmethod
-    def updateUser():
+    def getAllUsers(db: Session):
+        users = db.query(User).all()
+        if not users:
+            raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail="No users found")
+        users = [
+            {
+                "id": user.id,
+                "pseudo": user.pseudo,
+                "mail": user.mail,
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+            } for user in users
+        ]
+        return users
+
+    @staticmethod
+    def updateUser(db: Session):
         return print("updateUser")
 
     @staticmethod
-    def getUserID():
-        return print("getUserID")
+    def getUserID(user_id, db: Session):
+        user = db.query(User).filter(User.id == user_id).first()
+        if not user:
+            raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail="User not found")
+        user_info = {
+            "id": user.id,
+            "pseudo": Sm.decrypt_data(user.pseudo),
+            "mail": Sm.decrypt_data(user.mail),
+            "first_name": Sm.decrypt_data(user.first_name),
+            "last_name": Sm.decrypt_data(user.last_name),
+        }
+        return user_info
 
     # Gestion de l'identité
     @staticmethod
-    def getUserIdentity():
+    def getUserIdentity(db: Session):
         return print("getUserIdentity")
 
     @staticmethod
-    def getUserLastname():
+    def getUserLastname(db: Session):
         return print("getUserLastname")
 
     @staticmethod
-    def getUserFirstname():
+    def getUserFirstname(db: Session):
         return print("getUserFirstname")
 
     # Gestion des adresses
     @staticmethod
-    def getUserAddress():
+    def getUserAddress(db: Session):
         return print("getUserAddress")
 
     @staticmethod
-    def updateUserAddress():
+    def updateUserAddress(db: Session):
         return print("updateUserAddress")
 
     @staticmethod
-    def deleteUserAddress():
+    def deleteUserAddress(db: Session):
         return print("deleteUserAddress")
 
     # Gestion des numéros de téléphone
     @staticmethod
-    def getUserPhone():
+    def getUserPhone(db: Session):
         return print("getUserPhone")
 
     @staticmethod
-    def updateUserPhone():
+    def updateUserPhone(db: Session):
         return print("updateUserPhone")
 
     # Gestion des emails
     @staticmethod
-    def getUserEmail():
+    def getUserEmail(db: Session):
+
         return print("getUserEmail")
 
     @staticmethod
-    def updateUserEmail():
+    def checkEmail(mail, db: Session):
+        if db.query(User).filter(User.mail == mail).first():
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Mail already registered")
+        return
+
+    @staticmethod
+    def updateUserEmail(db: Session):
         return print("updateUserEmail")
 
     # Gestion des mots de passe
     @staticmethod
-    def getUserPassword():
+    def getUserPassword(userid, db: Session):
+        if db.query(User).filter(User.id == userid).first():
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User not found")
         return print("getUserPassword")
 
     @staticmethod
-    def updateUserPassword():
+    def updateUserPassword(db: Session):
         return print("updateUserPassword")
 
     # Gestion des rôles
     @staticmethod
-    def getUserRole():
+    def getUserRole(db: Session):
         return print("getUserRole")
 
     @staticmethod
-    def updateUserRole():
+    def updateUserRole(db: Session):
         return print("updateUserRole")
 
     @staticmethod
-    def deleteUserRole():
+    def deleteUserRole(db: Session):
         return print("deleteUserRole")
+
+    @staticmethod
+    def checkPseudo(pseudo, db: Session):
+        return print("checkPseudo")
