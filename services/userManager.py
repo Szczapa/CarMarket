@@ -10,8 +10,13 @@ class UserManager:
     def createUser(form_data: UserCreate, db: Session):
         mail = Sm.encrypt_data(form_data.mail)
         pseudo = Sm.encrypt_data(form_data.pseudo)
-        UserManager.checkEmail(mail, db)
-        UserManager.checkPseudo(pseudo, db)
+
+        if UserManager.checkEmail(mail, db):
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Mail already registered")
+
+        if UserManager.checkPseudo(pseudo, db):
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Pseudo already registered")
+
         lastname = Sm.encrypt_data(form_data.last_name)
         firstname = Sm.encrypt_data(form_data.first_name)
         hashed_password = Sm.hash_password(form_data.password)
@@ -25,6 +30,7 @@ class UserManager:
             last_name=lastname,
             hash_mail=hash_mail
         )
+
         db.add(new_user)
         db.commit()
         db.refresh(new_user)

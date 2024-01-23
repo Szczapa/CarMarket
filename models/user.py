@@ -8,9 +8,9 @@ class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
     pseudo = Column(String(255), unique=True)
-    first_name = Column(String(255), unique=True)
-    last_name = Column(String(255), unique=True)
-    password = Column(String(255), unique=True)
+    first_name = Column(String(255), unique=False)
+    last_name = Column(String(255), unique=False)
+    password = Column(String(255), unique=False)
     mail = Column(String(255), unique=True)
     hash_mail = Column(String(255), unique=True)
 

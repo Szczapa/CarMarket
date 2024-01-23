@@ -3,7 +3,6 @@ from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 from models.user import User
-from services.databaseManager import get_db
 from services.jwtManager import JWTManager as JWTm
 from services.securityManager import SecurityManager as Sm
 
