@@ -1,7 +1,7 @@
-from fastapi import Depends, HTTPException, status
+from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
+
 from models.category import Category, CategoryCreate
-from services.webhook import WebhookManager as Wm
 
 
 class CategoryManager:

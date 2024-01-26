@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Depends
-from services.loginManager import LoginManager as Lm
 from fastapi.security import OAuth2PasswordRequestForm
-from services.databaseManager import get_db
 from sqlalchemy.orm import Session
+
+from services.databaseManager import get_db
+from services.loginManager import LoginManager as Lm
+
 router = APIRouter()
 
 

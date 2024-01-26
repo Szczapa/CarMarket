@@ -1,25 +1,32 @@
 from fastapi import FastAPI
-from routers import login_router, product_router, user_router, category_router
-from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
+
+from routers import login_router, product_router, user_router, category_router
 
 app = FastAPI()
 
-# origins = [
-#     "http://localhost:3000",
-# ]
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=origins,
-#     allow_credentials=True,
-#     allow_methods=["*"],
-#     allow_headers=["*"],
-# )
+origins = [
+    "http://localhost:5173",
+    "http://localhost:8000",
+    # Ajoutez cette ligne si votre application Vue.js est servie à partir de 'http://localhost:8000'
+]
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+# @app.get("/")
+# async def root():
+#     return RedirectResponse("/docs")
 
 @app.get("/")
-async def root():
-    return RedirectResponse("/docs")
+def home():
+    return "Hello, World!"
 
 
 app.include_router(login_router.router, tags=["login"])

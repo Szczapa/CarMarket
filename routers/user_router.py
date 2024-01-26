@@ -13,11 +13,16 @@ async def get_all_users(db: Session = Depends(get_db)):
     return Um.getAllUsers(db)
 
 
-@router.get('/users/{user_id}')
+@router.get('/user/{user_id}')
 async def get_single_user(user_id: int, db: Session = Depends(get_db)):
     return Um.getUserID(user_id, db)
 
 
-@router.post('/users')
+@router.post('/user')
 async def create_user(user: UserCreate, db: Session = Depends(get_db)):
     return Um.createUser(user, db)
+
+
+@router.delete('/user/{user_id}')
+async def delete_user(user_id: int, db: Session = Depends(get_db)):
+    return Um.deleteUser(user_id, db)

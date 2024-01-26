@@ -11,7 +11,7 @@ class SecurityManager:
     key = os.getenv("SECRET_HASHER")
     if key is None:
         raise ValueError("La clé secrète 'SECRET_HASHER' est introuvable")
-    
+
     sel_fix = os.getenv("SEL")
     if sel_fix is None:
         raise ValueError("Le sel_fix 'SEL' est introuvable")

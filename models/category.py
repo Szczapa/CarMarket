@@ -1,6 +1,7 @@
-from services.databaseManager import Base
-from sqlalchemy import Column, Integer, String
 from pydantic import BaseModel
+from sqlalchemy import Column, Integer, String
+
+from services.databaseManager import Base
 
 
 class Category(Base):

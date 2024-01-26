@@ -1,26 +1,20 @@
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from fastapi import Depends, HTTPException, status
+from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
-from services.securityManager import SecurityManager as Sm
+
 from models.user import User, UserCreate
+from services.securityManager import SecurityManager as Sm
 
 
 class UserManager:
     @staticmethod
     def createUser(form_data: UserCreate, db: Session):
-        mail = Sm.encrypt_data(form_data.mail)
-        pseudo = Sm.encrypt_data(form_data.pseudo)
-
-        if UserManager.checkEmail(mail, db):
-            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Mail already registered")
-
-        if UserManager.checkPseudo(pseudo, db):
-            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Pseudo already registered")
-
+        hash_mail = Sm.hash_mail(form_data.mail)
+        UserManager.checkEmail(hash_mail, db)
         lastname = Sm.encrypt_data(form_data.last_name)
         firstname = Sm.encrypt_data(form_data.first_name)
+        mail = Sm.encrypt_data(form_data.mail)
         hashed_password = Sm.hash_password(form_data.password)
-        hash_mail = Sm.hash_mail(form_data.mail)
+        pseudo = Sm.encrypt_data(form_data.pseudo)
 
         new_user = User(
             pseudo=pseudo,
@@ -37,8 +31,11 @@ class UserManager:
         return new_user
 
     @staticmethod
-    def deleteUser(db: Session):
-        return print("deleteUser")
+    def deleteUser(user_id, db: Session):
+        delete = db.query(User).filter(User.id == user_id).delete()
+        if not delete:
+            raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail="User not found")
+        return {"message": "User deleted"}
 
     @staticmethod
     def getAllUsers(db: Session):
@@ -66,7 +63,6 @@ class UserManager:
         if not user:
             raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail="User not found")
         user_info = {
-            "id": user.id,
             "pseudo": Sm.decrypt_data(user.pseudo),
             "mail": Sm.decrypt_data(user.mail),
             "first_name": Sm.decrypt_data(user.first_name),
@@ -112,13 +108,12 @@ class UserManager:
     # Gestion des emails
     @staticmethod
     def getUserEmail(db: Session):
-
         return print("getUserEmail")
 
     @staticmethod
-    def checkEmail(mail, db: Session):
-        if db.query(User).filter(User.mail == mail).first():
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Mail already registered")
+    def checkEmail(hash_mail, db: Session):
+        if db.query(User).filter(User.hash_mail == hash_mail).first():
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Mail already registered")
         return
 
     @staticmethod

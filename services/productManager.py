@@ -1,8 +1,8 @@
-from fastapi import Depends, HTTPException, status
+from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
-from models.product import Product, ProductCreate
+
 from models.category import Category
-from services.webhook import WebhookManager as Wm
+from models.product import Product, ProductCreate
 
 
 class ProductManager:
@@ -65,6 +65,16 @@ class ProductManager:
         return products
 
     @staticmethod
+    def getActiveDiscountProducts(db: Session):
+        products = db.query(Product).filter(Product.active_reduced_price == True, Product.ative_product == True).all()
+        if products is None:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Products not found")
+        elif len(products) == 0:
+            raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail="Products not found")
+        return products
+
+    # Temporairy function
+    @staticmethod
     def getProductsByCategory(category, db: Session):
         products = db.query(Product).filter(Product.category == category).all()
         if products is None:
@@ -85,24 +95,6 @@ class ProductManager:
         return products
 
     @staticmethod
-    def getSoldProducts(db: Session):
-        products = db.query(Product).filter(Product.active_reduced_price == True).all()
-        if products is None:
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Products not found")
-        elif len(products) == 0:
-            raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail="Products not found")
-        return products
-
-    @staticmethod
-    def getActiveSoldProducts(db: Session):
-        products = db.query(Product).filter(Product.active_reduced_price == True, Product.ative_product == True).all()
-        if products is None:
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Products not found")
-        elif len(products) == 0:
-            raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail="Products not found")
-        return products
-
-    @staticmethod
     def GetProductsByNote(note, db: Session):
         products = db.query(Product).filter(Product.note == note).all()
         if products is None:
@@ -111,3 +103,11 @@ class ProductManager:
             raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail="Products not found")
         return products
 
+    @staticmethod
+    def getDiscountProducts(db: Session):
+        products = db.query(Product).filter(Product.active_reduced_price == True).all()
+        if products is None:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Products not found")
+        elif len(products) == 0:
+            raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail="Products not found")
+        return products

@@ -1,6 +1,6 @@
-from fastapi import Depends, HTTPException
-from sqlalchemy.orm import Session
+from fastapi import HTTPException
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from sqlalchemy.orm import Session
 
 from models.user import User
 from services.jwtManager import JWTManager as JWTm

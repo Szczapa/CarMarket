@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends
 
+from models.product import ProductCreate
 from services.databaseManager import get_db
 from services.productManager import ProductManager as Pm
-from models.product import ProductCreate
 
 router = APIRouter()
 
@@ -12,8 +12,13 @@ async def create_product(product: ProductCreate, db=Depends(get_db)):
     return Pm.addProduct(product, db)
 
 
-@router.get("/products")
+@router.get("/products/all")
 async def get_all_products(db=Depends(get_db)):
+    return Pm.getProducts(db)
+
+
+@router.get("/products")
+async def getActiveProduct(db=Depends(get_db)):
     return Pm.getProducts(db)
 
 

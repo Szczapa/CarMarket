@@ -1,7 +1,7 @@
-from services.databaseManager import Base
+from pydantic import BaseModel
 from sqlalchemy import Column, Integer, String
-from pydantic import BaseModel, Field
-from typing import Optional
+
+from services.databaseManager import Base
 
 
 class User(Base):
@@ -24,4 +24,3 @@ class UserCreate(BaseModel):
     password: str
     first_name: str
     last_name: str
-
