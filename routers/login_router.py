@@ -9,6 +9,6 @@ router = APIRouter()
 
 
 @router.post("/login")
-async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+async def login(form_login: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     # return await Lm.login(form_data,db)
-    return Lm.login(form_data, db),
+    return Lm.login(form_login, db),
