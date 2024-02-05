@@ -18,11 +18,11 @@ class WebhookManager:
         information = [
             {
                 "color": "11206535",
-                "title": "Demande de Requête produit",
+                "title": "Demande commande de Produit",
                 "fields": [
-                    {"name": "Nom du produit :", "value": "value", "inline": False},
-                    {"name": "Client :", "value": "value", "inline": False},
-                    {"name": "Prix :", "value": "value", "inline": False},
+                    {"name": "Nom du produit :", "value": data["name"], "inline": False},
+                    # {"name": "Client :", "value": "value", "inline": False},
+                    {"name": "Prix :", "value": data["price"], "inline": False},
                 ],
                 "footer": {
                     "text": datetime.now().strftime("%d/%m/%Y [%X]")
@@ -45,3 +45,4 @@ class WebhookManager:
             raise ValueError(
                 f"Request to Discord returned an error {response.status_code}, the response is:\n{response.text}")
         return response.status_code
+
