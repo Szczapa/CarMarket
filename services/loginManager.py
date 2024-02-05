@@ -11,7 +11,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 class LoginManager:
     @staticmethod
-    def login(form_data: OAuth2PasswordRequestForm, db: Session):
+    def login(form_login: OAuth2PasswordRequestForm, db: Session):
         # {
         #     "pseudo": "Eduardo",
         #     "mail": "Eduardo@gmail.com",
@@ -19,11 +19,13 @@ class LoginManager:
         #     "first_name": "Eduardo",
         #     "last_name": "Miguelito"
         # }
-        form_mail = Sm.hash_mail(form_data.username)
+        form_mail = Sm.hash_mail(form_login.username)
         user = db.query(User).filter(User.hash_mail == form_mail).first()
         if not user:
             raise HTTPException(status_code=401, detail="No user found")
-        if not Sm.verify_password(form_data.password, user.password):
+        if not Sm.verify_password(form_login.password, user.password):
             raise HTTPException(status_code=401, detail="Incorrect username or password")
         token = JWTm.encodeJWT(data={"sub": user.pseudo, "id": user.id, "mail": user.mail})
         return {"access_token": token, "token_type": "bearer"}
+
+
