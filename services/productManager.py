@@ -18,7 +18,7 @@ class ProductManager:
             name=form_data.name,
             description=form_data.description,
             price=form_data.price,
-            category=form_data.category
+            category_id=form_data.category
         )
         db.add(new_product)
         db.commit()
@@ -27,10 +27,12 @@ class ProductManager:
 
     @staticmethod
     def deleteProduct(product_id, db: Session):
-        delete = db.query(Product).filter(Product.id == product_id).delete()
-        if delete == 0:
+        product = db.query(Product).filter(Product.id == product_id).first()
+        if product is None:
             raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail="Product not found")
-        raise HTTPException(status_code=status.HTTP_200_OK, detail="Product deleted")
+        db.delete(product)
+        db.commit()
+        return {"detail": "Product deleted"}
 
     @staticmethod
     def updateProduct(product_id, db: Session):
@@ -111,3 +113,14 @@ class ProductManager:
         elif len(products) == 0:
             raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail="Products not found")
         return products
+
+    @staticmethod
+    def updateProduct(product_id, update_data, db: Session):
+        product = db.query(Product).filter(Product.id == product_id).first()
+        if product is None:
+            raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail="Product not found")
+        for key, value in update_data.items():
+            setattr(product, key, value)
+        db.commit()
+        db.refresh(product)
+        return product
