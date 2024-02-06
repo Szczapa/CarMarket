@@ -8,6 +8,7 @@ symfony 6 + twig.
 Une partie du code est tiré d'un des projets d'étude : https://github.com/Szczapa/Projet_Etude_planning_system_FastAPI .
 Cette nouvelle version sera donc optimisée et retravaillée pour améliorer la lisibilité, la maintenance et la sécurité.
 
+Frontend : https://github.com/Szczapa/CarMarket_vuejs
 ## FAQ
 
 #### Quel est l'objectif ?
